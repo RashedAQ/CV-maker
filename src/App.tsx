@@ -7,6 +7,7 @@ import { LanguageProvider } from '@/contexts/LanguageContext';
 import Landing from "./pages/Landing";
 import CVBuilder from "./pages/CVBuilder";
 import NotFound from "./pages/NotFound";
+import { ApiTest } from "./pages/ApiTest";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/builder" element={<CVBuilder />} />
+              <Route path="/api-test" element={<ApiTest />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
