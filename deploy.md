@@ -5,11 +5,15 @@
 1. **Commit and Push Changes**
    ```bash
    git add .
-   git commit -m "Add n8n API integration"
+   git commit -m "Add n8n API integration with Gemini"
    git push origin main
    ```
 
 2. **Vercel will automatically deploy** your changes to `https://cv-maker-lemon-beta.vercel.app`
+
+3. **Verify API endpoints** are working:
+   - Health check: `https://cv-maker-lemon-beta.vercel.app/api/health`
+   - CV generation: `https://cv-maker-lemon-beta.vercel.app/api/generate-cv`
 
 ## Step 2: Set Environment Variables (Optional)
 
