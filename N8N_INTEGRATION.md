@@ -132,7 +132,7 @@ The API returns appropriate HTTP status codes:
 
 To enable AI-powered CV generation, set these environment variables in your Vercel deployment:
 
-- `VITE_OPENAI_API_KEY` or `OPENAI_API_KEY`: Your OpenAI API key
+- `VITE_GEMINI_API_KEY` or `GEMINI_API_KEY`: Your Google Gemini API key
 
 If no API key is provided, the system will fall back to a mock response.
 
@@ -148,7 +148,7 @@ If no API key is provided, the system will fall back to a mock response.
 
 1. **CORS Errors**: The API includes CORS headers for cross-origin requests
 2. **Missing Fields**: Ensure both `jobDescription` and `cvText` are provided
-3. **API Key Issues**: Check that your OpenAI API key is properly set in Vercel environment variables
+3. **API Key Issues**: Check that your Gemini API key is properly set in Vercel environment variables
 
 ### Testing Locally
 

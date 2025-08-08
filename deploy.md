@@ -18,8 +18,8 @@ If you want to enable AI-powered CV generation, set these in your Vercel dashboa
 1. Go to your Vercel project dashboard
 2. Navigate to Settings > Environment Variables
 3. Add:
-   - `VITE_OPENAI_API_KEY` = Your OpenAI API key
-   - Or `OPENAI_API_KEY` = Your OpenAI API key
+   - `VITE_GEMINI_API_KEY` = Your Google Gemini API key
+   - Or `GEMINI_API_KEY` = Your Google Gemini API key
 
 ## Step 3: Test the API
 
@@ -77,7 +77,7 @@ If you want to enable AI-powered CV generation, set these in your Vercel dashboa
 - **API not responding:** Check the API test page first
 - **CORS errors:** The API includes proper CORS headers
 - **Missing data:** Ensure both jobDescription and cvText are provided
-- **OpenAI errors:** Check your API key in Vercel environment variables
+- **Gemini errors:** Check your API key in Vercel environment variables
 
 ## API Endpoint Details
 

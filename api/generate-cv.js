@@ -25,41 +25,46 @@ export default async function handler(req, res) {
       });
     }
 
-    // Check if OpenAI API key is available
-    const hasOpenAIKey = process.env.VITE_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+    // Check if Gemini API key is available
+    const hasGeminiKey = process.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || 'AIzaSyCAKI6d_Bid_FNRxfQKqHYLAqVoRkDcVSs';
     
     let response;
-    if (hasOpenAIKey) {
-      // Use OpenAI to generate tailored CV
-      const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+    if (hasGeminiKey) {
+      // Use Google Gemini to generate tailored CV
+      const geminiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${hasGeminiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${hasOpenAIKey}`,
         },
         body: JSON.stringify({
-          model: 'gpt-4o',
-          messages: [
+          contents: [
             {
-              role: 'system',
-              content: 'You are a professional resume generator. Analyze the job description and CV, then generate a tailored version that emphasizes relevant skills and experience. Return a structured text format.'
-            },
-            {
-              role: 'user',
-              content: `Job Description: ${jobDescription}\n\nOriginal CV: ${cvText}\n\nGenerate a tailored CV that matches the job requirements.`
+              parts: [
+                {
+                  text: `You are a professional resume generator. Analyze the job description and CV, then generate a tailored version that emphasizes relevant skills and experience. Return a structured text format.
+
+Job Description: ${jobDescription}
+
+Original CV: ${cvText}
+
+Generate a tailored CV that matches the job requirements.`
+                }
+              ]
             }
           ],
-          temperature: 0.3,
-          max_tokens: 2000,
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 2000,
+          }
         }),
       });
 
-      if (!openaiResponse.ok) {
-        throw new Error(`OpenAI API request failed: ${openaiResponse.status}`);
+      if (!geminiResponse.ok) {
+        throw new Error(`Gemini API request failed: ${geminiResponse.status}`);
       }
 
-      const openaiData = await openaiResponse.json();
-      const tailoredContent = openaiData.choices[0]?.message?.content || '';
+      const geminiData = await geminiResponse.json();
+      const tailoredContent = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
       response = {
         success: true,
@@ -73,7 +78,7 @@ export default async function handler(req, res) {
           },
           timestamp: new Date().toISOString()
         },
-        message: 'CV generated successfully using AI'
+        message: 'CV generated successfully using Gemini AI'
       };
     } else {
       // Fallback to mock response
@@ -108,7 +113,7 @@ This CV has been tailored to emphasize skills and experience that match the job 
           },
           timestamp: new Date().toISOString()
         },
-        message: 'CV generated successfully (mock mode - no OpenAI key)'
+                 message: 'CV generated successfully (mock mode - no Gemini key)'
       };
     }
 

@@ -1,8 +1,8 @@
 import { CVGenerationRequest, CVGenerationResponse } from '@/types/cv';
 
 export class TailoredHTMLCVService {
-  private static readonly API_URL = 'https://api.openai.com/v1/chat/completions';
-  private static readonly MODEL = 'gpt-4o';
+  private static readonly API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+  private static readonly MODEL = 'gemini-pro';
   private static readonly MAX_TOKENS = 4000;
   private static readonly TEMPERATURE = 0.3;
 
@@ -10,26 +10,28 @@ export class TailoredHTMLCVService {
     try {
       const prompt = this.buildTailoredPrompt(request.originalCV, request.jobDescription);
       
-      const response = await fetch(this.API_URL, {
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyCAKI6d_Bid_FNRxfQKqHYLAqVoRkDcVSs';
+      const response = await fetch(`${this.API_URL}?key=${apiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY || ''}`,
         },
         body: JSON.stringify({
-          model: this.MODEL,
-          messages: [
+          contents: [
             {
-              role: 'system',
-              content: 'You are a professional resume generator. Your task is to analyze a job description and a candidate\'s CV, then generate a tailored HTML resume that emphasizes relevant skills and experience without exaggeration. Return only valid HTML with class names, no inline styles or CSS.'
-            },
-            {
-              role: 'user',
-              content: prompt
+              parts: [
+                {
+                  text: `You are a professional resume generator. Your task is to analyze a job description and a candidate's CV, then generate a tailored HTML resume that emphasizes relevant skills and experience without exaggeration. Return only valid HTML with class names, no inline styles or CSS.
+
+${prompt}`
+                }
+              ]
             }
           ],
-          temperature: this.TEMPERATURE,
-          max_tokens: this.MAX_TOKENS,
+          generationConfig: {
+            temperature: this.TEMPERATURE,
+            maxOutputTokens: this.MAX_TOKENS,
+          }
         }),
       });
 
@@ -40,7 +42,7 @@ export class TailoredHTMLCVService {
       }
 
       const data = await response.json();
-      const content = data.choices[0]?.message?.content;
+      const content = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
       if (!content) {
         throw new Error('No content received from AI service');
