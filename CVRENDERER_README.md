@@ -5,7 +5,7 @@ A modern, clean CV renderer component that matches the professional design from 
 ## Features
 
 - **Clean, Professional Design**: Matches the exact styling from your HTML template
-- **Responsive Layout**: Works on desktop and mobile devices
+- **Responsive Layout**: Worksa on desktop and mobile devices
 - **Skill Categorization**: Automatically categorizes skills by relevance (core, relevant, additional, technical, soft, language, tool)
 - **Visual Skill Levels**: Color-coded skill levels with dots (beginner, intermediate, advanced, expert)
 - **Modern Icons**: Uses Lucide React icons for contact information
